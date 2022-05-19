@@ -21,14 +21,14 @@ rollbar.info() rollbar.log() rollbar.error() rollbar.warning() rollbar.critical(
 
 const items = ['Bread', 'Eggs', 'Milk']
 
-app.use("/", express.static(path.join(__dirname, "../public")));
+app.use("/", express.static(path.join(__dirname, "/publictwo")));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/index.html'))
+    res.sendFile(path.join(__dirname, '/publictwo/index.html'))
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/index.css'))
+    res.sendFile(path.join(__dirname, '/publictwo/index.css'))
 })
 
 app.get('/api/items', (req, res) => {
