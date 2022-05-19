@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Grocery List</title>
+</head>
+
+<body>
+    <h1>Grocery List</h1>
+    <form>
+        <input type='text' placeholder='Enter grocery item here...' />
+        <button>add to listt</button>
+    </form>
+    <section></section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        const addForm = document.querySelector('form');
+        const nameInput = document.querySelector('input');
+        const container = document.querySelector('section');
+
+        function putTheThingInTheView(res) {
+            container.innerHTML = ''
+            nameInput.value = ''
+
+            res.data.forEach((itemName, index) => {
+                container.innerHTML += `<p name=${index}>${itemName}</p>`
+            })
+
+            document.querySelectorAll('p').forEach(element => {
+                const theIndexValue = element.getAttribute('name');
+
+                element.addEventListener('click', () => {
+                    axios
+                        .delete(`/api/items/${theIndexValue}`)
+                        .then(res => {
+                            putTheThingInTheView(res)
+                        })
+                })
+            })
+        }
+
+        function submitHandler(evt) {
+            evt.preventDefault();
+
+            axios
+                .post('/api/items', { name: nameInput.value })
+                .then(res => {
+                    putTheThingInTheView(res)
+                })
+                .catch(err => {
+                    nameInput.value = ''
+
+                    const notif = document.createElement('aside')
+                    notif.innerHTML = `<p>${err.response.data}</p>
+                    <button class="close">close</button>`
+                    document.body.appendChild(notif)
+
+                    document.querySelectorAll('.close').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.target.parentNode.remove()
+                        })
+                    })
+                })
+        }
+
+        axios
+            .get('/api/items')
+            .then(res => {
+                putTheThingInTheView(res)
+            })
+
+        addForm.addEventListener('submit', submitHandler)
+    </script>
+</body>
+
+</html>

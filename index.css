@@ -1,0 +1,17 @@
+
+body {
+    background-color: rgb(172, 172, 172);
+    
+}
+
+h1, form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+p {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+}
